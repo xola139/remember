@@ -1,0 +1,1 @@
+{verbosConocidos:[{traduccion:"cortar",infinitivo:"cut",pasado:"cut",participio:"cut"}],verbosoDesconocidos:[{traduccion:"convertirse",infinitivo:"become",pasado:"became",participio:"become"}]}
