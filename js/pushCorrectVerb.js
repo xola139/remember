@@ -1,5 +1,6 @@
 var pushFirst=null;
 var contadorPage=1;
+var v
 
 var globalVerbosConocidos
 //Funcio para validar cambio en el appcache
@@ -88,7 +89,7 @@ $(document).ready(function(){
 
 	});
 
-	//Para retirar los vervos que no se conocen de la bandeja no reconocidos
+	//Para retirar los verbos que no se conocen de la bandeja no reconocidos
 	$("#replay").on("click",function(){
 		localStorage.removeItem("verbosConocidos");
 	});
@@ -107,9 +108,9 @@ $(document).ready(function(){
 
 	//Validamos si soporta localstorage si no valida estamos fritos
 	if(typeof(Storage) !== "undefined") {
-		// var verbos ={items:[{traduccion:"cortar",infinitivo:"cut",pasado:"cut",participio:"cut"},{traduccion:"convertirse",infinitivo:"become",pasado:"became",participio:"become"},{infinitivo:"be",pasado:"was-were",participio:"been",traduccion:"ser"},{infinitivo:"become",pasado:"became",participio:"become",traduccion:"convertirseen"},{infinitivo:"bite",pasado:"bit",participio:"bitten",traduccion:"morder"},{infinitivo:"break",pasado:"broke",participio:"broken",traduccion:"romper"},{infinitivo:"buy",pasado:"bought",participio:"bought",traduccion:"comprar"},{infinitivo:"choose",pasado:"chose",participio:"chosen",traduccion:"elegir"},{infinitivo:"come",pasado:"came",participio:"come",traduccion:"venir"},{infinitivo:"cost",pasado:"cost",participio:"cost",traduccion:"costar"},{infinitivo:"cut",pasado:"cut",participio:"cut",traduccion:"cortar"},{infinitivo:"do",pasado:"did",participio:"done",traduccion:"hacer"},{infinitivo:"fall",pasado:"fell",participio:"fallen",traduccion:"caer"},{infinitivo:"feel",pasado:"felt",participio:"felt",traduccion:"sentir"},{infinitivo:"find",pasado:"found",participio:"found",traduccion:"encontrar"},{infinitivo:"forget",pasado:"forgot",participio:"forgotten",traduccion:"olvidar"},{infinitivo:"get",pasado:"got",participio:"gotorgotten",traduccion:"obtener"},{infinitivo:"give",pasado:"gave",participio:"given",traduccion:"dar"},{infinitivo:"go",pasado:"went",participio:"gone",traduccion:"ir"},{infinitivo:"have",pasado:"had",participio:"had",traduccion:"tener"},{infinitivo:"hold",pasado:"held",participio:"held",traduccion:"sujetar"},{infinitivo:"know",pasado:"knew",participio:"known",traduccion:"saber"},{infinitivo:"learn",pasado:"learnt",participio:"learnt",traduccion:"aprender"},{infinitivo:"let",pasado:"let",participio:"let",traduccion:"permitir"},{infinitivo:"lose",pasado:"lost",participio:"lost",traduccion:"perder"},{infinitivo:"make",pasado:"made",participio:"made",traduccion:"hacer"},{infinitivo:"meet",pasado:"met",participio:"met",traduccion:"encontrarse"},{infinitivo:"mistake",pasado:"mistook",participio:"mistaken",traduccion:"equivocarse"},{infinitivo:"pay",pasado:"paid",participio:"paid",traduccion:"pagar"},{infinitivo:"put",pasado:"put",participio:"put",traduccion:"poner"},{infinitivo:"read",pasado:"read",participio:"read",traduccion:"leer"},{infinitivo:"say",pasado:"said",participio:"said",traduccion:"decir"},{infinitivo:"sell",pasado:"sold",participio:"sold",traduccion:"vender"},{infinitivo:"show",pasado:"showed",participio:"shown",traduccion:"mostrar"},{infinitivo:"sing",pasado:"sang",participio:"sung",traduccion:"cantar"},{infinitivo:"sleep",pasado:"slept",participio:"slept",traduccion:"dormir"},{infinitivo:"speak",pasado:"spoke",participio:"spoken",traduccion:"hablar"},{infinitivo:"swim",pasado:"swam",participio:"swum",traduccion:"nadar"},{infinitivo:"take",pasado:"took",participio:"taken",traduccion:"tomar"},{infinitivo:"teach",pasado:"taught",participio:"taught",traduccion:"enseñar"},{infinitivo:"tell",pasado:"told",participio:"told",traduccion:"explicar"},{infinitivo:"think",pasado:"thought",participio:"thought",traduccion:"pensar"},{infinitivo:"understand",pasado:"understood",participio:"understood",traduccion:"entender"},{infinitivo:"win",pasado:"won",participio:"won",traduccion:"ganar"}]};
+		
 		var verbos = _verbos;
-		console.log(verbos);
+		
 		if(localStorage.getItem('verbosVerb')==null){
 		/*	$.ajax({
 				type:     "GET",
@@ -163,12 +164,15 @@ function backNext(obj){
 	//	Y lo escondemos				
 	$(".page").not(page).removeClass("active").hide();
 
+	//colocar verbo a idenfiticar
+	colocarVerbo ();
+
 }
 
 function agregaItems(tipo){
 	var theContenedor = $("#contenedor");
 	
-	console.log(localStorage.getItem(tipo));
+	
 	var localData = JSON.parse(localStorage.getItem(tipo));
 	var contadorItems = 0;
 	contadorPage = 1
@@ -233,7 +237,7 @@ function agregaItems(tipo){
 		var dataPar = item.participio;
 		
 		
-		var btnEspanol =    $("<div class='flex-item'><a id='boton_"+dataEsp+"_traduccion'  class='traduccion waves-effect waves-light btn ' lang='mx' rel='"+index+"'>"+item.traduccion+"</a></div>");
+		var btnEspanol =    $("<div class='flex-item div_page_"+contadorPage+"' style='display:none;'><a id='boton_"+dataEsp+"_traduccion'  class='traduccion waves-effect waves-light btn ' lang='mx' rel='"+index+"'>"+item.traduccion+"</a></div>");
 		var btnInfinitivo = $("<div class='flex-item'><a id='boton_"+dataInf+"_infinitivo'  class='infinitivo waves-effect waves-light btn' lang='us' rel='"+index+"'>"+item.infinitivo+"</a></div>");
 		var btnPasado =     $("<div class='flex-item'><a id='boton_"+dataPas+"_pasado'  class='pasado waves-effect waves-light btn' lang='us' rel='"+index+"'>"+item.pasado+"</a></div>");
 		var btnParticipio = $("<div class='flex-item'><a id='boton_"+dataPar+"_participio'  class='participio waves-effect waves-light btn' lang='us' rel='"+index+"'>"+item.participio+"</a></div>");
@@ -258,17 +262,24 @@ function agregaItems(tipo){
 	
 	
 	
-	
-	
-	
+	/*
+	var s_= $("#boton_aceptar_traduccion");
+	$("#ctn_traduccion").html(s_.parent());
+	*/ 
 	$("#npage").text("1/"+contadorPage);
 	var theJson={};	
 	$("div[id^=ctn_]").click(function (){
 
 		var contenedor = this;
 		var seleccionado = $("a[class*=presionado]");
+
+		console.log(seleccionado.parent());
+
+		$(seleccionado.parent()).css('display','block');
 		
 		var tiempoVerb = contenedor.id.replace("ctn_","");
+
+		
 
 		var contenedorSame = $("#"+seleccionado[0].id.replace(seleccionado[0].className.split(" ")[0],"") + tiempoVerb);
 		
@@ -307,9 +318,9 @@ function agregaItems(tipo){
 				}
 
 				//Damos una animacion para hacer el efecto que se ha cargado en lista conocidos
-				$("#img_IKnow").effect( "bounce", {}, 500, function(){
-					
-				} );
+				$("#img_IKnow").effect( "bounce", {}, 500, function(){});
+
+				colocarVerbo ();
 				
 			}
 			
@@ -343,15 +354,28 @@ function agregaItems(tipo){
 				
 	});
 	
+	//colocar verbo a idenfiticar
+	colocarVerbo ();
 	
  }
 
 
+ function colocarVerbo (){
+	//Para empezar a colocar de forma dinamica el verbo en español en el contenedor principal
+	var identify_active = document.querySelector("div[class*=active]");
+	var items_active = identify_active.querySelectorAll("div[class='flex-item div_"+identify_active.id+"']")
+	var num_ram = Math.floor(Math.random() * items_active.length -1) ;
+	num_ram = num_ram == -1 ? 0: num_ram;
+	
+	if(items_active[num_ram]!= undefined && items_active[num_ram].lastChild != undefined){
+		$("#"+items_active[num_ram].lastChild.id).trigger("click");
+		$("#ctn_traduccion").trigger("click");
+	}
+	
 
-
+ }
 
 // Open source code
-
   window.page = window.location.hash || "#page_1";
 
   $(window).on("resize", function() {
