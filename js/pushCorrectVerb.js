@@ -1,26 +1,7 @@
 var pushFirst=null;
 var contadorPage=1;
 var v
-
 var globalVerbosConocidos
-//Funcio para validar cambio en el appcache
-window.addEventListener('load', function(e) {
-
-	window.applicationCache.addEventListener('updateready', function(e) {
-	  window.location.reload();
-	  
-	  if (window.applicationCache.status == window.applicationCache.UPDATEREADY) {
-	      // Browser downloaded a new app cache.
-	      if (confirm('nuevas funcionalidades disponibles')) {
-	        window.location.reload();
-	      }
-	  } else {
-		  // Manifest didn't changed. Nothing new to server.
-	  }
-  }, false);
-
-}, false);
-
 
 function validaExisteElementos(){
 		var itemsExisten = $("div[class*=active]");
@@ -176,9 +157,6 @@ function agregaItems(tipo){
 	var localData = JSON.parse(localStorage.getItem(tipo));
 	var contadorItems = 0;
 	contadorPage = 1
-	
-	console.log(localData);
-	//console.log(localData.items);
 	var elementos= typeof localData.items === 'undefined' ? localData : localData.items;
 	var auxVerbos,auxVerbosDes;
 	var auxExiste=false;
@@ -272,15 +250,8 @@ function agregaItems(tipo){
 
 		var contenedor = this;
 		var seleccionado = $("a[class*=presionado]");
-
-		console.log(seleccionado.parent());
-
 		$(seleccionado.parent()).css('display','block');
-		
 		var tiempoVerb = contenedor.id.replace("ctn_","");
-
-		
-
 		var contenedorSame = $("#"+seleccionado[0].id.replace(seleccionado[0].className.split(" ")[0],"") + tiempoVerb);
 		
 
@@ -298,18 +269,23 @@ function agregaItems(tipo){
 			//cuando se halla recordado las formas del verbo se agrega a una lista de reconocidos 
 			if(contenedores.length == 4){
 				var verbConocido=[];
-				$(contenedores).fadeOut(500, function() { 
+
+				
+				//$(contenedores).fadeOut(500, function() { 
 					//Inicializamos los div  con las frases correspondiente
 					$("#ctn_traduccion").html("traduccion");
 					$("#ctn_infinitivo").html("infinitivo");
 					$("#ctn_pasado").html("pasado");
 					$("#ctn_participio").html("participio");
-				});
+					
+					
+				//});
 
 				verbConocido.push(theJson);
 				if(localStorage.getItem('verbosConocidos')==null){//if por si aun no existe en local storage
 					localStorage.setItem('verbosConocidos', JSON.stringify(verbConocido));
 					$("#txt_Iknow").text(verbConocido.length);
+					
 				}else{//si existe entonces agregamos el json
 					var tmp = JSON.parse(localStorage.getItem('verbosConocidos'));
 					tmp.push(theJson);
@@ -325,6 +301,7 @@ function agregaItems(tipo){
 			}
 			
 		}else{
+			
 			$(contenedor).animate({
 		          backgroundColor: "#f44336"
 		        }, 500 ).animate({
@@ -375,7 +352,11 @@ function agregaItems(tipo){
 
  }
 
+
+
+
 // Open source code
+
   window.page = window.location.hash || "#page_1";
 
   $(window).on("resize", function() {
