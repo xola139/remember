@@ -90,6 +90,7 @@ $(document).ready(function(){
 	//Validamos si soporta localstorage si no valida estamos fritos
 	if(typeof(Storage) !== "undefined") {
 		
+		// la variable _verbos esta inicializda con la lista de verbos en el archivo importando con verbos.js
 		var verbos = _verbos;
 		
 		if(localStorage.getItem('verbosVerb')==null){
@@ -246,6 +247,8 @@ function agregaItems(tipo){
 	*/ 
 	$("#npage").text("1/"+contadorPage);
 	var theJson={};	
+	var _rel = null;
+	var _relTmp = null;
 	$("div[id^=ctn_]").click(function (){
 
 		var contenedor = this;
@@ -253,10 +256,22 @@ function agregaItems(tipo){
 		$(seleccionado.parent()).css('display','block');
 		var tiempoVerb = contenedor.id.replace("ctn_","");
 		var contenedorSame = $("#"+seleccionado[0].id.replace(seleccionado[0].className.split(" ")[0],"") + tiempoVerb);
+
+		
+		
+		//obtenemos el valor que relacionara la famila de verbo (Presente,pasado, infitivo,)
+		if(tiempoVerb == "traduccion"){
+			_rel = seleccionado.parent().children()[0].attributes.rel.value;
+		}else{
+			_relTmp = seleccionado.parent().children()[0].attributes.rel.value;
+		}
 		
 
 		//Validamos si concide el boton con el contenedor apartir de la clase
-		if(seleccionado.hasClass( tiempoVerb ) || (contenedorSame.length > 0  && seleccionado[0].text === contenedorSame[0].text) ){
+		//if(((_relTmp == null || _rel== _relTmp) && seleccionado.hasClass( tiempoVerb )) || (contenedorSame.length > 0  && seleccionado[0].text === contenedorSame[0].text) ){
+		  if(((_relTmp == null || _rel== _relTmp) && seleccionado.hasClass( tiempoVerb ))  ){
+			
+			
 			$(this).html(seleccionado.parent());
 			
 			//aca iremos guardando el json que contiene el verbo en español,infinitvo,pasado y participio
@@ -277,6 +292,9 @@ function agregaItems(tipo){
 					$("#ctn_infinitivo").html("infinitivo");
 					$("#ctn_pasado").html("pasado");
 					$("#ctn_participio").html("participio");
+
+					_rel = null;
+					_relTmp = null;
 					
 					
 				//});
