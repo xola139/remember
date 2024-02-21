@@ -18,8 +18,8 @@ $(document).ready(function(){
 	var globalVerbosConocidos = JSON.parse(localStorage.getItem('verbosConocidos'));
 	var globalVerbosDesconocidos = JSON.parse(localStorage.getItem('verbosDesconocidos'));
 
-	$("#txt_Iknow").text(globalVerbosConocidos==null ? "0":globalVerbosConocidos.length);	
-	$("#txt_Idontknow").text(globalVerbosDesconocidos==null ? "0":globalVerbosDesconocidos.length);	
+	$("#txt_Iknow").text(globalVerbosConocidos==null ? "0":globalVerbosConocidos.length );	
+	$("#txt_Idontknow").text(globalVerbosDesconocidos==null ? "0":globalVerbosDesconocidos.length + " Por practicar");	
 
 	
 	$("#btn_IKnow").on("click",function(){
@@ -28,23 +28,34 @@ $(document).ready(function(){
 	});
 
 	$("#btn_noConocido").on("click",function(){
+		$("#boton_regresar").show();
 		agregaItems('verbosDesconocidos');	
+
+	});
+
+	$("#boton_regresar").on("click",function(){
+		$("#boton_regresar").hide();
+		agregaItems('verbosVerb');	
+		
 
 	});
 
 	
 	
+	
 
 	$("#noConocido").on("click",function(){
-		var seleccionado = $("a[class*=presionado]");
-		var verbosRelacionados =$("a[rel="+seleccionado[0].rel+"]");
+		//var seleccionado = $("a[class*=presionado]");
+		var _rel= $("#ctn_traduccion").children().children().attr("rel");
+		var verbosRelacionados =$("a[rel="+_rel+"]");
 		var theJson={};
 			
 		//For para colocar nuevamente los titulos y guardarlos en uns lista localstorage
 		for(i = 0;i < verbosRelacionados.length;i++){
 			var tmpCnt=$(verbosRelacionados[i]);
 			var nombre=tmpCnt[0].classList[0];
-			theJson[nombre]=tmpCnt[0].id.replace("boton_","");
+			//theJson[nombre]=tmpCnt[0].id.replace("boton_","");
+			theJson[nombre]=tmpCnt[0].id.split("_")[1];
 			tmpCnt[0].parentElement.remove();
 		}
 
@@ -59,13 +70,14 @@ $(document).ready(function(){
 			var tmp = JSON.parse(localStorage.getItem('verbosDesconocidos'));
 			tmp.push(theJson);
 			localStorage.setItem('verbosDesconocidos', JSON.stringify(tmp));
-			$("#txt_Idontknow").text(tmp.length);
+			$("#txt_Idontknow").text(tmp.length + " Por practicar") ;
 			
 		}
 
 		//Los quitamos del contenedor principal
 		//verbosRelacionados.remove();
-
+		//colocar verbo a idenfiticar
+		colocarVerbo ();
 		validaExisteElementos();
 
 	});
@@ -210,6 +222,7 @@ function agregaItems(tipo){
 		}
 		
 		
+
 		var dataEsp = item.traduccion.replace(/\s/g,"");
 		var dataInf = item.infinitivo.replace(/\s/g,"");
 		var dataPas = item.pasado.replace(/\s/g,"");
@@ -257,6 +270,11 @@ function agregaItems(tipo){
 		var tiempoVerb = contenedor.id.replace("ctn_","");
 		var contenedorSame = $("#"+seleccionado[0].id.replace(seleccionado[0].className.split(" ")[0],"") + tiempoVerb);
 
+		var nameVerb = seleccionado[0].id.split("_")[1];
+		console.log(nameVerb);
+		console.log($("a[id^=boton_"+nameVerb+"_]").length);
+
+		var isRegularVerb = ($("a[id^=boton_"+nameVerb+"_]").length > 1 && tiempoVerb != 'infinitivo' ) ? true:false;
 		
 		
 		//obtenemos el valor que relacionara la famila de verbo (Presente,pasado, infitivo,)
@@ -269,7 +287,10 @@ function agregaItems(tipo){
 
 		//Validamos si concide el boton con el contenedor apartir de la clase
 		//if(((_relTmp == null || _rel== _relTmp) && seleccionado.hasClass( tiempoVerb )) || (contenedorSame.length > 0  && seleccionado[0].text === contenedorSame[0].text) ){
-		  if(((_relTmp == null || _rel== _relTmp) && seleccionado.hasClass( tiempoVerb ))  ){
+		
+		
+		
+		if(((_relTmp == null || _rel == _relTmp) && (seleccionado.hasClass( tiempoVerb )|| isRegularVerb))  ){
 			
 			
 			$(this).html(seleccionado.parent());

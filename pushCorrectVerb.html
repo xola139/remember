@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<html lang="en" manifest="pushCorrectVerb.appcache">
 
 <html >
 
@@ -46,6 +46,9 @@
     	
     	
     		<div id="contenedor" class="contenedorVerbos" >
+          
+          <a id="boton_regresar" class="waves-effect waves-light btn" style="float: left;display: none;" >Regresar</a>
+
     			<table>
     				<tr>
               <td>
@@ -54,8 +57,9 @@
                     <div class="col s6" style="text-align:left;">
                       <ul class="">
                           <li>
-                            <img id="noConocido" src="img/Idontknow.gif" alt="" class="responsive-img" width="100" height="50">
-                            <a id="btn_noConocido" class="waves-effect waves-light btn-floating " style="text-align: center;"> <span id="txt_Idontknow">1</span></a>
+                            <img id="noConocido" src="img/Idontknow.gif" alt="" class="responsive-img btn" width="100" height="50">
+                            <a id="btn_noConocido" class="btn" style="text-align: center;"> <span id="txt_Idontknow">1 Por practicar</span></a>
+                            
                           </li>
                           
                       </ul>
@@ -68,7 +72,7 @@
                        <ul class="">
                         <li class="">
                           <a id="btn_IKnow" class="waves-effect waves-light btn-floating " style="text-align: center;"> <span id="txt_Iknow">1</span></a>
-                          <img id="img_IKnow" src="img/Iknow.gif" alt="" class="responsive-img" width="100" height="50"></li>
+                          <img id="img_IKnow" src="img/Iknow.gif" alt="" class="responsive-img btn" width="100" height="50"></li>
                           
                         </li  >  
                         
@@ -86,6 +90,7 @@
               </td>
             </tr>
           </table>
+          
           <div class="row center ">
       		  <div id="ctn_traduccion"  class="col s3 relaciona " style="padding: 0;">traduccion</div>
       			<div id="ctn_infinitivo" class="col s3 relaciona" style="padding: 0;">infinitivo</div>
